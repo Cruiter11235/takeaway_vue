@@ -3,7 +3,7 @@ import login from "@/views/login.vue";
 import customer from "@/views/customer.vue";
 import merchant from "@/views/merchant.vue";
 import stuff from "@/views/delivery.vue";
-import customerInfo from "@/views/cusinfo.vue";
+import customerInfo from "@/views/customerViews/cusinfo.vue";
 import admin from "@/views/admin.vue";
 import myMeals from "@/views/merchantViews/myMeals.vue";
 import showComments from "@/views/merchantViews/showComments.vue";
@@ -16,6 +16,7 @@ import mgDelivery from "@/views/adminViews/mgDelivery.vue";
 import mgFoods from "@/views/adminViews/mgFoods.vue";
 import mgMerchant from "@/views/adminViews/mgMerchant.vue";
 import mgOrders from "@/views/adminViews/mgOrders.vue";
+import mgReport from "@/views/adminViews/mgReport.vue";
 const routes = [
   { path: "/", component: login, name: "login" },
   {
@@ -64,6 +65,7 @@ const routes = [
       { path: "/admin/mgFoods", component: mgFoods, name: "mgFoods" },
       { path: "/admin/mgMerchant", component: mgMerchant, name: "mgMerchant" },
       { path: "/admin/mgOrders", component: mgOrders, name: "mgOrders" },
+      { path: "/admin/mgReport", component: mgReport, name: "mgReport" },
     ],
   },
 ];

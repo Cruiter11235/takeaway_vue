@@ -1,5 +1,5 @@
 <template>
-  <addComp :keylist="['username', 'password', 'phone']"></addComp>
+  <!-- <addComp :keylist="['username', 'password', 'phone']"></addComp> -->
   <a-table
     :columns="columns"
     :data-source="dataSource"
@@ -9,7 +9,7 @@
     style="width: 95%; margin: auto"
   >
     <template #bodyCell="{ column, text, record }">
-      <template v-if="['password', 'phone'].includes(column.dataIndex)">
+      <template v-if="['password'].includes(column.dataIndex)">
         <div>
           <a-input
             v-if="editableData[record.key]"
@@ -51,46 +51,14 @@
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import addComp from "@/components/addComp.vue";
+import { DeliveryColumn } from "../../store/Columns/columnForAdmin";
+import { DeliveryData } from "../../store/staticData/dataForAdmin";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
-const columns = [
-  {
-    title: "delivery_id",
-    dataIndex: "key",
-    width: "5%",
-  },
-  {
-    title: "username",
-    dataIndex: "username",
-    width: "20%",
-  },
-  {
-    title: "password",
-    dataIndex: "password",
-    width: "20%",
-  },
-  {
-    title: "phone",
-    dataIndex: "phone",
-    width: "20%",
-  },
-  {
-    title: "operation",
-    dataIndex: "operation",
-  },
-];
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    username: `User ${i}`,
-    password: "123",
-    phone: "110",
-  });
-}
-const dataSource = ref(data);
+const columns = DeliveryColumn;
+const dataSource = ref(DeliveryData);
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(

@@ -1,5 +1,5 @@
 <template>
-  <addComp :keylist="['f_class', 'f_name', 'price','is_available']"></addComp>
+  <addComp :keylist="['f_class', 'f_name', 'price', 'is_available']"></addComp>
   <a-table
     :columns="columns"
     :data-source="dataSource"
@@ -94,6 +94,8 @@ import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import { message } from "ant-design-vue";
 import addComp from "@/components/addComp.vue";
+import { FoodColumn } from "@/store/Columns/columnForMerchant";
+import { FoodData } from "@/store/staticData/dataForMerchant";
 // 上传图片函数
 const handleChange = (info) => {
   if (info.file.status !== "uploading") {
@@ -115,62 +117,10 @@ const pagination = {
   showSizeChanger: false,
 };
 // 表列
-const columns = [
-  {
-    title: "id",
-    dataIndex: "key",
-    width: "10%",
-  },
-  {
-    title: "菜品类别",
-    dataIndex: "f_class",
-    width: "10%",
-  },
-  {
-    title: "菜品名称",
-    dataIndex: "f_name",
-    width: "10%",
-  },
-  {
-    title: "是否可售",
-    dataIndex: "is_available",
-    width: "10%",
-  },
-  {
-    title: "每月销量",
-    dataIndex: "sale_count",
-    width: "10%",
-  },
-  {
-    title: "平均打分",
-    dataIndex: "score",
-    width: "10%",
-  },
-  {
-    title: "菜品价格",
-    dataIndex: "price",
-    width: "10%",
-  },
-  {
-    title: "operation",
-    dataIndex: "operation",
-  },
-];
+const columns = FoodColumn;
 // 表数据
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    f_class: "中餐",
-    f_name: "666",
-    is_available: "yes",
-    sale_count: "1",
-    score: "1",
-    price: "1",
-  });
-}
+const dataSource = ref(FoodData);
 // Refs
-const dataSource = ref(data);
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(

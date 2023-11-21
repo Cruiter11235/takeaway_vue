@@ -22,9 +22,10 @@ const items = [
   ]),
   getItem("Manage Else", "sub2", () => h(AppstoreOutlined), [
     getItem("manage orders", "4"),
-    getItem("manage foods", "5"),
+    // getItem("manage foods", "5"),
     getItem("manage comments", "6"),
     getItem("manage classes", "7"),
+    getItem("manage reports", "8")
   ]),
   {
     type: "divider",

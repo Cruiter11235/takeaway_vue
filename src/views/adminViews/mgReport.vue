@@ -1,4 +1,5 @@
 <template>
+  <!-- <addComp :keylist="['class_name']"></addComp> -->
   <a-table
     :columns="columns"
     :data-source="dataSource"
@@ -31,7 +32,23 @@
             </a-typography-link>
           </span>
           <span v-else>
-            <a @click="edit(record.key)">Edit</a>
+            <!-- <a @click="edit(record.key)">Edit</a> -->
+            <a-popconfirm
+              title="是否核实举报?"
+              ok-text="Yes"
+              cancel-text="No"
+              @confirm="AcceptReport(record.key)"
+            >
+              <a href="#">Accept</a>
+            </a-popconfirm>
+            <a-popconfirm
+              title="是否拒绝举报?"
+              ok-text="Yes"
+              cancel-text="No"
+              @confirm="RefuseReport(record.key)"
+            >
+              <a href="#">Refuse</a>
+            </a-popconfirm>
           </span>
         </div>
       </template>
@@ -41,14 +58,15 @@
   <script setup>
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
-import { CommentsColumn } from "@/store/Columns/columnForMerchant";
-import { CommentsData } from "@/store/staticData/dataForMerchant";
+import { ReportColumn } from "../../store/Columns/columnForAdmin";
+import addComp from "@/components/addComp.vue";
+import { ReportData } from "../../store/staticData/dataForAdmin";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
-const columns = CommentsColumn;
-const dataSource = ref(CommentsData);
+const columns = ReportColumn;
+const dataSource = ref(ReportData);
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(
@@ -67,6 +85,14 @@ const save = (key) => {
 // 取消的逻辑
 const cancel = (key) => {
   delete editableData[key];
+};
+// AcceptReport
+const AcceptReport = (key) => {
+  alert(key);
+};
+// RefuseReport
+const RefuseReport = (key) => {
+  alert(key);
 };
 </script>
   <style scoped>

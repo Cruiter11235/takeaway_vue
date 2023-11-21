@@ -31,7 +31,7 @@
             </a-typography-link>
           </span>
           <span v-else>
-            <a @click="edit(record.key)">Edit</a>
+            <!-- <a @click="edit(record.key)">Edit</a> -->
             <a-popconfirm
               title="Are you sure delete this task?"
               ok-text="Yes"
@@ -49,58 +49,14 @@
   <script setup>
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
+import { OrderColumn } from "../../store/Columns/columnForAdmin";
+import { OrderData } from "../../store/staticData/dataForAdmin";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
-const columns = [
-  {
-    title: "o_id",
-    dataIndex: "key",
-    width: "10%",
-  },
-  {
-    title: "m_id",
-    dataIndex: "m_id",
-    width: "10%",
-  },
-  {
-    title: "c_id",
-    dataIndex: "c_id",
-    width: "10%",
-  },
-  {
-    title: "s_id",
-    dataIndex: "s_id",
-    width: "10%",
-  },
-  {
-    title: "begin_time",
-    dataIndex: "begin_time",
-    width: "30%",
-  },
-  {
-    title: "status",
-    dataIndex: "status",
-    width: "10%",
-  },
-  {
-    title: "operation",
-    dataIndex: "operation",
-  },
-];
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    m_id: `User ${i}`,
-    s_id: "123",
-    c_id: "666",
-    begin_time: "110",
-    status: "finished",
-  });
-}
-const dataSource = ref(data);
+const columns = OrderColumn;
+const dataSource = ref(OrderData);
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(

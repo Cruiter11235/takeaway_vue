@@ -78,6 +78,8 @@ const handleClick = (e) => {
     Router.push("/admin/mgComments");
   } else if (e.key == "7") {
     Router.push("/admin/mgClasses");
+  }else if(e.key == "8"){
+    Router.push("/admin/mgReport");
   }
 };
 watch(openKeys, (val) => {

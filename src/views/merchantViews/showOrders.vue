@@ -28,7 +28,6 @@
           >
             <a-select-option value="Waiting">Waiting</a-select-option>
             <a-select-option value="Taking">Taking</a-select-option>
-            <a-select-option value="Finished">Finished</a-select-option>
           </a-select>
           <template v-else>
             {{ text }}
@@ -57,7 +56,10 @@
     <script setup>
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
+import { OrderColumn } from "@/store/Columns/columnForMerchant";
 import FoodList from "@/components/FoodList.vue";
+import { OrdersData } from "@/store/staticData/dataForMerchant";
+
 const open = ref(false);
 const PopContent = ref({});
 const showModal = (key) => {
@@ -69,60 +71,8 @@ const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
-const columns = [
-  {
-    title: "订单id",
-    dataIndex: "key",
-    width: "10%",
-  },
-  {
-    title: "顾客姓名",
-    dataIndex: "m_id",
-    width: "10%",
-  },
-  {
-    title: "顾客地址",
-    dataIndex: "c_id",
-    width: "10%",
-  },
-  {
-    title: "顾客电话",
-    dataIndex: "s_id",
-    width: "10%",
-  },
-  {
-    title: "订单创建时间",
-    dataIndex: "begin_time",
-    width: "20%",
-  },
-  {
-    title: "订单状态",
-    dataIndex: "status",
-    width: "10%",
-  },
-  {
-    title: "骑手电话",
-    dataIndex: "dphone",
-    width: "10%",
-  },
-  {
-    title: "operation",
-    dataIndex: "operation",
-  },
-];
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    m_id: `User ${i}`,
-    s_id: "123",
-    c_id: "666",
-    begin_time: "110",
-    status: "finished",
-    dphone: "1234",
-  });
-}
-const dataSource = ref(data);
+const columns = OrderColumn;
+const dataSource = ref(OrdersData);
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(

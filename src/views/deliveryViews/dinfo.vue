@@ -1,9 +1,9 @@
 <template>
   <div style="width: 80%; height: 80%">
-    <div class="title">你好,666号外卖员</div>
+    <div class="title">你好,外卖员{{ datasource.username }}</div>
     <br />
     <a-input-password
-      v-model="password"
+      v-model:value="datasource.password"
       placeholder="input something"
       :disabled="flag"
     >
@@ -13,14 +13,22 @@
     </a-input-password>
     <br />
     <br />
-    <a-input v-model="name" placeholder="input something" :disabled="flag">
+    <!-- <a-input
+      v-model:value="datasource."
+      placeholder="input something"
+      :disabled="flag"
+    >
       <template #addonBefore>
         <text style="color: white">name</text>
       </template>
-    </a-input>
-    <br />
-    <br />
-    <a-input v-model="phone" placeholder="input something" :disabled="flag">
+    </a-input> -->
+    <!-- <br />
+    <br /> -->
+    <a-input
+      v-model="datasource.phonenumber"
+      placeholder="input something"
+      :disabled="flag"
+    >
       <template #addonBefore>
         <text style="color: white">phone number</text>
       </template>
@@ -38,11 +46,8 @@
 
 <script setup>
 import { reactive, ref, watch, h } from "vue";
-const value = ref("");
-const password = ref("");
-const name = ref("");
-const location = ref("");
-const phone = ref("");
+import { Deliveryinfo } from "../../store/staticData/dataForDelivery";
+const datasource = reactive(Deliveryinfo);
 const flag = ref(true);
 function changeState() {
   flag.value = !flag.value;

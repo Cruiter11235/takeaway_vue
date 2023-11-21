@@ -1,5 +1,5 @@
 <template>
-  <addComp :keylist="['f_id', 'content', 'score']"></addComp>
+  <!-- <addComp :keylist="['f_id', 'content', 'score']"></addComp> -->
   <a-table
     :columns="columns"
     :data-source="dataSource"
@@ -32,7 +32,7 @@
             </a-typography-link>
           </span>
           <span v-else>
-            <a @click="edit(record.key)">Edit</a>
+            <!-- <a @click="edit(record.key)">Edit</a> -->
             <a-popconfirm
               title="Are you sure delete this task?"
               ok-text="Yes"
@@ -51,46 +51,14 @@
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import addComp from "@/components/addComp.vue";
+import { CommentsColumn } from "../../store/Columns/columnForAdmin";
+import { CommnetsData } from "../../store/staticData/dataForAdmin";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
-const columns = [
-  {
-    title: "comment_id",
-    dataIndex: "key",
-    width: "5%",
-  },
-  {
-    title: "f_id",
-    dataIndex: "f_id",
-    width: "20%",
-  },
-  {
-    title: "content",
-    dataIndex: "content",
-    width: "20%",
-  },
-  {
-    title: "score",
-    dataIndex: "score",
-    width: "20%",
-  },
-  {
-    title: "operation",
-    dataIndex: "operation",
-  },
-];
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    f_id: `User ${i}`,
-    content: "123",
-    score: "110",
-  });
-}
-const dataSource = ref(data);
+const columns = CommentsColumn;
+const dataSource = ref(CommnetsData);
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(

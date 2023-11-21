@@ -51,34 +51,14 @@
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import addComp from "@/components/addComp.vue";
+import { ClassColumn } from "@/store/Columns/columnForAdmin";
+import { ClassData } from "../../store/staticData/dataForAdmin";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
-const columns = [
-  {
-    title: "class_id",
-    dataIndex: "key",
-    width: "20%",
-  },
-  {
-    title: "class_name",
-    dataIndex: "class_name",
-    width: "60%",
-  },
-  {
-    title: "operation",
-    dataIndex: "operation",
-  },
-];
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    class_name: `Class ${i}`,
-  });
-}
-const dataSource = ref(data);
+const columns = ClassColumn;
+const dataSource = ref(ClassData);
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(

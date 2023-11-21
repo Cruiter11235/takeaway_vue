@@ -57,58 +57,14 @@
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import addComp from "@/components/addComp.vue";
+import { MerchantColumn } from "../../store/Columns/columnForAdmin";
+import { MerchantData } from "../../store/staticData/dataForAdmin";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
-const columns = [
-  {
-    title: "merchant_id",
-    dataIndex: "key",
-    width: "5%",
-  },
-  {
-    title: "m_name",
-    dataIndex: "name",
-    width: "15%",
-  },
-  {
-    title: "m_username",
-    dataIndex: "username",
-    width: "20%",
-  },
-  {
-    title: "m_password",
-    dataIndex: "password",
-    width: "20%",
-  },
-  {
-    title: "m_phone",
-    dataIndex: "phone",
-    width: "20%",
-  },
-  {
-    title: "location",
-    dataIndex: "location",
-    width: "20%",
-  },
-  {
-    title: "operation",
-    dataIndex: "operation",
-  },
-];
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    username: `User ${i}`,
-    password: "123",
-    name: "肯德基",
-    phone: "110",
-    location: "四川大学",
-  });
-}
-const dataSource = ref(data);
+const columns = MerchantColumn;
+const dataSource = ref(MerchantData);
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(

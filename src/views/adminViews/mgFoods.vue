@@ -53,76 +53,14 @@
 <script setup>
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
+import { FoodColumn } from "../../store/Columns/columnForAdmin";
+import { FoodData } from "../../store/staticData/dataForAdmin";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
-const columns = [
-  {
-    title: "f_id",
-    dataIndex: "key",
-    width: "10%",
-  },
-  {
-    title: "class_id",
-    dataIndex: "class_id",
-    width: "10%",
-  },
-  {
-    title: "m_id",
-    dataIndex: "m_id",
-    width: "10%",
-  },
-  {
-    title: "f_name",
-    dataIndex: "f_name",
-    width: "10%",
-  },
-  {
-    title: "is_available",
-    dataIndex: "is_available",
-    width: "10%",
-  },
-  {
-    title: "sale_count",
-    dataIndex: "sale_count",
-    width: "10%",
-  },
-  {
-    title: "score",
-    dataIndex: "score",
-    width: "10%",
-  },
-  {
-    title: "url",
-    dataIndex: "f_url",
-    width: "10%",
-  },
-  {
-    title: "price",
-    dataIndex: "price",
-    width: "10%",
-  },
-  {
-    title: "operation",
-    dataIndex: "operation",
-  },
-];
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    class_id: "1",
-    m_id: "123",
-    f_name: "666",
-    is_available: "finished",
-    sale_count: "1",
-    score: "1",
-    f_url: "1",
-    price: "1",
-  });
-}
-const dataSource = ref(data);
+const columns = FoodColumn;
+const dataSource = ref(FoodData);
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(
