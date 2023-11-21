@@ -1,4 +1,15 @@
 <template>
+  <!-- popwindow -->
+  <a-modal
+    v-model:open="open"
+    title="Basic Modal"
+    width="100%"
+    wrap-class-name="full-modal"
+    :footer="null"
+  >
+    <food-list :content="PopContent"></food-list>
+  </a-modal>
+  <!-- popwindow -->
   <a-table
     :columns="columns"
     :data-source="dataSource"
@@ -15,9 +26,9 @@
             v-model:value="editableData[record.key][column.dataIndex]"
             style="width: 120px"
           >
-            <a-select-option value="NT">not take</a-select-option>
-            <a-select-option value="T">taking</a-select-option>
-            <a-select-option value="F">finished</a-select-option>
+            <a-select-option value="Waiting">Waiting</a-select-option>
+            <a-select-option value="Taking">Taking</a-select-option>
+            <a-select-option value="Finished">Finished</a-select-option>
           </a-select>
           <template v-else>
             {{ text }}
@@ -36,6 +47,7 @@
           </span>
           <span v-else>
             <a @click="edit(record.key)">Edit</a>
+            <a-button @click="showModal(record.key)">查看订单内容</a-button>
           </span>
         </div>
       </template>
@@ -45,6 +57,14 @@
     <script setup>
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
+import FoodList from "@/components/FoodList.vue";
+const open = ref(false);
+const PopContent = ref({});
+const showModal = (key) => {
+  console.log(key);
+  PopContent.value = { v: key };
+  open.value = true;
+};
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
@@ -123,8 +143,24 @@ const cancel = (key) => {
   delete editableData[key];
 };
 </script>
-    <style scoped>
+<style lang="less" scoped>
 .editable-row-operations a {
   margin-right: 8px;
+}
+.full-modal {
+  .ant-modal {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
+  }
+  .ant-modal-body {
+    flex: 1;
+  }
 }
 </style>

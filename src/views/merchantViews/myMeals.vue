@@ -1,5 +1,5 @@
 <template>
-  <addComp :keylist="['f_class', 'f_name', 'price']"></addComp>
+  <addComp :keylist="['f_class', 'f_name', 'price','is_available']"></addComp>
   <a-table
     :columns="columns"
     :data-source="dataSource"
@@ -11,20 +11,12 @@
     <template #bodyCell="{ column, text, record }">
       <template
         v-if="
-          ['c_id', 'f_name', 'is_available', 'price'].includes(column.dataIndex)
+          ['c_id', 'f_name', 'is_available', 'price', 'f_class'].includes(
+            column.dataIndex
+          )
         "
       >
-        <div v-if="column.dataIndex != 'is_available'">
-          <a-input
-            v-if="editableData[record.key]"
-            v-model:value="editableData[record.key][column.dataIndex]"
-            style="margin: -5px 0"
-          />
-          <template v-else>
-            {{ text }}
-          </template>
-        </div>
-        <div v-else>
+        <div v-if="column.dataIndex == 'is_available'">
           <a-select
             v-if="editableData[record.key]"
             v-model:value="editableData[record.key][column.dataIndex]"
@@ -33,6 +25,31 @@
             <a-select-option value="yes">yes</a-select-option>
             <a-select-option value="no">no</a-select-option>
           </a-select>
+          <template v-else>
+            {{ text }}
+          </template>
+        </div>
+        <div v-else-if="column.dataIndex == 'f_class'">
+          <a-select
+            v-if="editableData[record.key]"
+            v-model:value="editableData[record.key][column.dataIndex]"
+            style="width: 120px"
+          >
+            <a-select-option value="中餐">中餐</a-select-option>
+            <a-select-option value="甜点饮品">甜点饮品</a-select-option>
+            <a-select-option value="蔬菜水果">蔬菜水果</a-select-option>
+            <a-select-option value="西式快餐">西式快餐</a-select-option>
+          </a-select>
+          <template v-else>
+            {{ text }}
+          </template>
+        </div>
+        <div v-else>
+          <a-input
+            v-if="editableData[record.key]"
+            v-model:value="editableData[record.key][column.dataIndex]"
+            style="margin: -5px 0"
+          />
           <template v-else>
             {{ text }}
           </template>
@@ -106,7 +123,7 @@ const columns = [
   },
   {
     title: "菜品类别",
-    dataIndex: "class_id",
+    dataIndex: "f_class",
     width: "10%",
   },
   {
@@ -144,7 +161,7 @@ const data = [];
 for (let i = 0; i < 100; i++) {
   data.push({
     key: i.toString(),
-    class_id: "1",
+    f_class: "中餐",
     f_name: "666",
     is_available: "yes",
     sale_count: "1",

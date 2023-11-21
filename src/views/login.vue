@@ -19,8 +19,7 @@
           />
           <a-radio-group v-model:value="value">
             <a-radio :value="1">顾客</a-radio>
-            <a-radio :value="2">商家</a-radio>
-            <a-radio :value="3">外卖员</a-radio>
+            <a-radio :value="2">外卖员</a-radio>
           </a-radio-group>
           <button class="form_button button submit" @click="signUp">
             SIGN UP
