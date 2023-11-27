@@ -21,10 +21,10 @@ const items = [
     getItem("manage delivery", "3"),
   ]),
   getItem("Manage Else", "sub2", () => h(AppstoreOutlined), [
-    getItem("manage orders", "4"),
+    // getItem("manage orders", "4"),
     // getItem("manage foods", "5"),
-    getItem("manage comments", "6"),
-    getItem("manage classes", "7"),
+    // getItem("manage comments", "6"),
+    // getItem("manage classes", "7"),
     getItem("manage reports", "8")
   ]),
   {

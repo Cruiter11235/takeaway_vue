@@ -33,7 +33,7 @@
             <a-popconfirm title="Sure to save?" @confirm="save(record.key)">
               <a>Save</a>
             </a-popconfirm>
-            <a-typography-link @click="cancel(record.key)">
+            <a-typography-link @click="cancel(record.key,record)">
               cancel
             </a-typography-link>
           </span>
@@ -70,7 +70,7 @@ const edit = (key) => {
   editableData[key] = cloneDeep(
     dataSource.value.filter((item) => key === item.key)[0]
   );
-  console.log(editableData[key]);
+  // console.log(editableData[key]);
 };
 // 保存的逻辑
 const save = (key) => {
@@ -79,6 +79,7 @@ const save = (key) => {
     editableData[key]
   );
   delete editableData[key];
+  console.log(dataSource.value.filter((item) => key === item.key)[0]);
 };
 // 取消的逻辑
 const cancel = (key) => {
