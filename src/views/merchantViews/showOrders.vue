@@ -2,7 +2,7 @@
   <!-- popwindow -->
   <a-modal
     v-model:open="open"
-    title="Basic Modal"
+    title="订单详情"
     width="100%"
     wrap-class-name="full-modal"
     :footer="null"
@@ -87,6 +87,7 @@ const save = (key) => {
     editableData[key]
   );
   delete editableData[key];
+  console.log(dataSource.value.filter((item) => key === item.key)[0]);
 };
 // 取消的逻辑
 const cancel = (key) => {

@@ -88,6 +88,7 @@ const cancel = (key) => {
 // 删除逻辑
 const deletebyId = (key) => {
   dataSource.value = dataSource.value.filter((item) => key != item.key);
+  console.log(key);
 };
 </script>
 <style scoped>

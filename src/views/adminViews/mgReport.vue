@@ -68,31 +68,15 @@ const pagination = {
 const columns = ReportColumn;
 const dataSource = ref(ReportData);
 const editableData = reactive({});
-const edit = (key) => {
-  editableData[key] = cloneDeep(
-    dataSource.value.filter((item) => key === item.key)[0]
-  );
-  console.log(editableData[key]);
-};
-// 保存的逻辑
-const save = (key) => {
-  Object.assign(
-    dataSource.value.filter((item) => key === item.key)[0],
-    editableData[key]
-  );
-  delete editableData[key];
-};
-// 取消的逻辑
-const cancel = (key) => {
-  delete editableData[key];
-};
 // AcceptReport
 const AcceptReport = (key) => {
-  alert(key);
+  dataSource.value = dataSource.value.filter((item) => key != item.key);
+  console.log(key);
 };
 // RefuseReport
 const RefuseReport = (key) => {
-  alert(key);
+  dataSource.value = dataSource.value.filter((item) => key != item.key);
+  console.log(key);
 };
 </script>
   <style scoped>

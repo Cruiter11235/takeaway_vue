@@ -86,6 +86,7 @@
 import Router from "@/router/router.js";
 import { onMounted, watch, ref } from "vue";
 import { useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from "vue-router";
+import API from "../utils/API";
 const route = useRoute();
 let init = () => {
   let switchCtn = document.querySelector("#switch-cnt");
@@ -123,8 +124,10 @@ let init = () => {
   };
   shell();
 };
-function signIn() {
+async function signIn() {
   console.log("signin", UserNameSI.value, PasswordSI.value, value.value);
+  // 测试我们的API
+  console.log(await API.get("home/multidata"));
   let role = value.value;
   if (role == 1) {
     Router.push("/customer/info");

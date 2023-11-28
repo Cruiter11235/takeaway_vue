@@ -64,7 +64,7 @@ const edit = (key) => {
   editableData[key] = cloneDeep(
     dataSource.value.filter((item) => key === item.key)[0]
   );
-  console.log(editableData[key]);
+  // console.log(editableData[key]);
 };
 // 保存的逻辑
 const save = (key) => {
@@ -73,6 +73,7 @@ const save = (key) => {
     editableData[key]
   );
   delete editableData[key];
+  console.log(dataSource.value.filter((item) => key === item.key)[0]);
 };
 // 取消的逻辑
 const cancel = (key) => {
@@ -81,6 +82,7 @@ const cancel = (key) => {
 // 删除逻辑
 const deletebyId = (key) => {
   dataSource.value = dataSource.value.filter((item) => key != item.key);
+  console.log(key);
 };
 </script>
 <style scoped>

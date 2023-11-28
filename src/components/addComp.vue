@@ -41,12 +41,14 @@ const openNotification = (desc) => {
   });
 };
 const handleOk = (e) => {
+  console.log(formState);
   confirmLoading.value = true;
   setTimeout(() => {
     confirmLoading.value = true;
     open.value = false;
     //插入数据操作
     openNotification("成功");
+    confirmLoading.value = false;
   }, 1000);
 };
 </script>

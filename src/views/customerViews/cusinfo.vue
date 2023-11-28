@@ -48,6 +48,9 @@ const datasource = reactive(CustomerInfo);
 const flag = ref(true);
 function changeState() {
   flag.value = !flag.value;
+  if(flag.value===true){
+    console.log(datasource);
+  }
 }
 </script>
 
