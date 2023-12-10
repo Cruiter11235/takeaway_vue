@@ -23,12 +23,12 @@ const OrdersData = [];
 for (let i = 0; i < 100; i++) {
   OrdersData.push({
     key: i.toString(),
-    m_id: `User ${i}`,
-    s_id: "123",
-    c_id: "666",
+    c_name: `User ${i}`,
+    c_address: "123",
+    c_phone: "666",
     begin_time: "110",
     status: "finished",
-    dphone: "1234",
+    d_phone: "1234",
   });
 }
 export { FoodData, CommentsData, OrdersData };

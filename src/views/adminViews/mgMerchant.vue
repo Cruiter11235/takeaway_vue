@@ -1,6 +1,6 @@
 <template>
   <addComp
-    :keylist="['m_name', 'm_username', 'm_password', 'm_phone', 'location']"
+    :keylist="['m_name', 'm_username', 'm_password', 'm_phone', 'm_address']"
   ></addComp>
   <a-table
     :columns="columns"
@@ -33,7 +33,7 @@
             <a-popconfirm title="Sure to save?" @confirm="save(record.key)">
               <a>Save</a>
             </a-popconfirm>
-            <a-typography-link @click="cancel(record.key,record)">
+            <a-typography-link @click="cancel(record.key, record)">
               cancel
             </a-typography-link>
           </span>
@@ -59,12 +59,24 @@ import { reactive, ref } from "vue";
 import addComp from "@/components/addComp.vue";
 import { MerchantColumn } from "../../store/Columns/columnForAdmin";
 import { MerchantData } from "../../store/staticData/dataForAdmin";
+import { onMounted } from "vue";
+import API from "../../utils/API";
+import { MerchantDataLoader } from "../../store/DataLoaders/AdminDataLoader";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
 const columns = MerchantColumn;
 const dataSource = ref(MerchantData);
+onMounted(() => {
+  API({
+    method: "post",
+    url: "/admin/getMerchant",
+    data: JSON.stringify({}),
+  }).then((res) => {
+    dataSource.value = MerchantDataLoader(res.data.dt);
+  });
+});
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(
@@ -79,7 +91,22 @@ const save = (key) => {
     editableData[key]
   );
   delete editableData[key];
-  console.log(dataSource.value.filter((item) => key === item.key)[0]);
+  let editedData = dataSource.value.filter((item) => key === item.key)[0];
+  let PostData = {
+    m_id: editedData.key,
+    m_name: editedData.name,
+    m_username: editedData.username,
+    m_password: editedData.password,
+    m_phone: editedData.phone,
+    m_address: editedData.location,
+  };
+  API({
+    method: "post",
+    url: "/admin/updateMerchant",
+    data: JSON.stringify(PostData),
+  }).then((res) => {
+    console.log(res);
+  });
 };
 // 取消的逻辑
 const cancel = (key) => {
@@ -89,6 +116,13 @@ const cancel = (key) => {
 const deletebyId = (key) => {
   dataSource.value = dataSource.value.filter((item) => key != item.key);
   console.log(key);
+  API({
+    method: "post",
+    url: "/admin/deleteMerchant",
+    data: JSON.stringify({ m_id: key }),
+  }).then((res) => {
+    console.log(res);
+  });
 };
 </script>
 <style scoped>

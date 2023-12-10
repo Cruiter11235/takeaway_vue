@@ -53,6 +53,8 @@ import { reactive, ref } from "vue";
 import addComp from "@/components/addComp.vue";
 import { CommentsColumn } from "../../store/Columns/columnForAdmin";
 import { CommnetsData } from "../../store/staticData/dataForAdmin";
+import API from "../../utils/API";
+import { onMounted } from "vue";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,

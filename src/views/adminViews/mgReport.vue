@@ -61,21 +61,52 @@ import { reactive, ref } from "vue";
 import { ReportColumn } from "../../store/Columns/columnForAdmin";
 import addComp from "@/components/addComp.vue";
 import { ReportData } from "../../store/staticData/dataForAdmin";
+import { onMounted } from "vue";
+import API from "../../utils/API";
+import { ReportDataLoader } from "../../store/DataLoaders/AdminDataLoader";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
 const columns = ReportColumn;
 const dataSource = ref(ReportData);
+onMounted(() => {
+  API({
+    method: "post",
+    url: "/admin/getReport",
+    data: JSON.stringify({}),
+  }).then((res) => {
+    dataSource.value = ReportDataLoader(res.data.dt);
+    console.log(res.data);
+  });
+});
 const editableData = reactive({});
 // AcceptReport
 const AcceptReport = (key) => {
   dataSource.value = dataSource.value.filter((item) => key != item.key);
+  let PostData = {
+    r_id: key,
+    tag: "yes",
+  };
+  API({
+    method: "post",
+    url: "/admin/updateReport",
+    data: JSON.stringify(PostData),
+  });
   console.log(key);
 };
 // RefuseReport
 const RefuseReport = (key) => {
   dataSource.value = dataSource.value.filter((item) => key != item.key);
+  let PostData = {
+    r_id: key,
+    tag: "no",
+  };
+  API({
+    method: "post",
+    url: "/admin/updateReport",
+    data: JSON.stringify(PostData),
+  });
   console.log(key);
 };
 </script>

@@ -25,7 +25,7 @@
     <!-- <br />
     <br /> -->
     <a-input
-      v-model="datasource.phonenumber"
+      v-model:value="datasource.phonenumber"
       placeholder="input something"
       :disabled="flag"
     >
@@ -45,14 +45,39 @@
 </template>
 
 <script setup>
-import { reactive, ref, watch, h } from "vue";
+import { reactive, ref, watch, h, onMounted } from "vue";
 import { Deliveryinfo } from "../../store/staticData/dataForDelivery";
+import API from "../../utils/API";
 const datasource = reactive(Deliveryinfo);
 const flag = ref(true);
+onMounted(() => {
+  let d_id = localStorage.getItem("d_id");
+  API({
+    method: "post",
+    url: "/delivery/getInfo",
+    data: JSON.stringify({ d_id: d_id }),
+  }).then((res) => {
+    console.log(res.data);
+    let data = res.data.dt;
+    datasource.username = data.d_username;
+    datasource.password = data.d_password;
+    datasource.phonenumber = data.d_phone;
+  });
+});
 function changeState() {
   flag.value = !flag.value;
-  if(flag.value===true){
+  if (flag.value === true) {
     console.log(datasource);
+    let d_id = localStorage.getItem("d_id");
+    API({
+      method: "post",
+      url: "/delivery/updateInfo",
+      data: JSON.stringify({
+        d_id: d_id,
+        d_password: datasource.password,
+        d_phone: datasource.phonenumber,
+      }),
+    });
   }
 }
 </script>

@@ -43,12 +43,29 @@ import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import { CommentsColumn } from "@/store/Columns/columnForMerchant";
 import { CommentsData } from "@/store/staticData/dataForMerchant";
+import { onMounted } from "vue";
+import API from "../../utils/API";
+import { CommentsDataLoader } from "../../store/DataLoaders/MerchantDataLoader";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
 const columns = CommentsColumn;
 const dataSource = ref(CommentsData);
+onMounted(() => {
+  let PostData = {
+    m_id: localStorage.getItem("m_id"),
+  };
+  API({
+    method: "post",
+    url: "/merchant/getComments",
+    data: JSON.stringify(PostData),
+  }).then((res) => {
+    console.log(res.data);
+    dataSource.value = CommentsDataLoader(res.data.dt);
+    console.log(dataSource.value);
+  });
+});
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(

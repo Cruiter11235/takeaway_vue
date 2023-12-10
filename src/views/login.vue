@@ -84,6 +84,7 @@
 
 <script setup>
 import Router from "@/router/router.js";
+import axios from "axios";
 import { onMounted, watch, ref } from "vue";
 import { useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from "vue-router";
 import API from "../utils/API";
@@ -126,21 +127,70 @@ let init = () => {
 };
 async function signIn() {
   console.log("signin", UserNameSI.value, PasswordSI.value, value.value);
-  // 测试我们的API
-  console.log(await API.get("home/multidata"));
   let role = value.value;
-  if (role == 1) {
-    Router.push("/customer/info");
-  } else if (role == 2) {
-    Router.push("/merchant/mymeals");
-  } else if (role == 3) {
-    Router.push("/delivery/info");
+  if (value.value == 1) {
+    role = "customer";
+  } else if (value.value == 2) {
+    role = "merchant";
+  } else if (value.value == 3) {
+    role = "delivery";
   } else {
-    Router.push("/admin/mgCustomer");
+    role = "admin";
   }
+  let PostData = {
+    username: UserNameSI.value,
+    password: PasswordSI.value,
+    role: role,
+  };
+  API({
+    method: "post",
+    url: "/login",
+    data: JSON.stringify(PostData),
+  }).then((res) => {
+    console.log(res.data);
+    if (res.data.status == 0) {
+      alert("登陆成功");
+      if (value.value == 1) {
+        Router.push("/customer/info");
+        localStorage.setItem("c_id", res.data.c_id);
+      } else if (value.value == 2) {
+        localStorage.setItem("m_id", res.data.m_id);
+        Router.push("/merchant/mymeals");
+      } else if (value.value == 3) {
+        localStorage.setItem("d_id", res.data.d_id);
+        Router.push("/delivery/info");
+      } else {
+        Router.push("/admin/mgCustomer");
+      }
+    } else {
+      alert("登陆失败");
+    }
+  });
 }
 function signUp() {
   console.log("signup", UserNameSU.value, PasswordSU.value, value.value);
+  let role = "";
+  if (value.value == 1) {
+    role = "customer";
+  } else if (value.value == 2) {
+    role = "delivery";
+  }
+  let postData = {
+    username: UserNameSU.value,
+    password: PasswordSU.value,
+    role: role,
+  };
+  API({
+    method: "post",
+    url: "/register",
+    data: JSON.stringify(postData),
+  }).then((res) => {
+    if (res.data.status == 0) {
+      alert("注册成功");
+    } else {
+      alert("注册失败");
+    }
+  });
 }
 let PasswordSU = ref("");
 let PasswordSI = ref("");

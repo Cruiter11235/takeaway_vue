@@ -96,6 +96,24 @@ import { message } from "ant-design-vue";
 import addComp from "@/components/addComp.vue";
 import { FoodColumn } from "@/store/Columns/columnForMerchant";
 import { FoodData } from "@/store/staticData/dataForMerchant";
+import { onMounted } from "vue";
+import API from "../../utils/API";
+import { FoodDataLoader } from "../../store/DataLoaders/MerchantDataLoader";
+// 表数据
+const dataSource = ref(FoodData);
+// loadData
+onMounted(() => {
+  let PostData = JSON.stringify({
+    m_id: localStorage.getItem("m_id"),
+  });
+  API({
+    method: "post",
+    url: "/merchant/getMeal",
+    data: PostData,
+  }).then((res) => {
+    dataSource.value = FoodDataLoader(res.data.dt);
+  });
+});
 // 上传图片函数
 const handleChange = (info) => {
   if (info.file.status !== "uploading") {
@@ -118,8 +136,7 @@ const pagination = {
 };
 // 表列
 const columns = FoodColumn;
-// 表数据
-const dataSource = ref(FoodData);
+
 // Refs
 const editableData = reactive({});
 const edit = (key) => {
@@ -136,6 +153,19 @@ const save = (key) => {
   );
   delete editableData[key];
   console.log(dataSource.value.filter((item) => key === item.key)[0]);
+  let editedData = dataSource.value.filter((item) => key === item.key)[0];
+  let PostData = JSON.stringify({
+    f_id: editedData.key,
+    f_name: editedData.f_name,
+    f_class: editedData.f_class,
+    price: editedData.price,
+    is_available: editedData.is_available,
+  });
+  API({
+    method: "post",
+    url: "/merchant/updateMeal",
+    data: PostData,
+  });
 };
 // 取消函数
 const cancel = (key) => {
@@ -145,6 +175,15 @@ const cancel = (key) => {
 const deletebyId = (key) => {
   if (confirm("确认删除吗?")) {
     console.log(key);
+    API({
+      method: "post",
+      url: "/merchant/deleteMeal",
+      data: JSON.stringify({
+        f_id: key,
+      }),
+    }).then((res) => {
+      console.log(res.data);
+    });
     dataSource.value = dataSource.value.filter((item) => key !== item.key);
   }
 };

@@ -53,12 +53,24 @@ import { reactive, ref } from "vue";
 import addComp from "@/components/addComp.vue";
 import { CustomerColumn } from "../../store/Columns/columnForAdmin";
 import { CustomerData } from "../../store/staticData/dataForAdmin";
+import API from "../../utils/API";
+import { CustomerDataLoader } from "../../store/DataLoaders/AdminDataLoader";
+import { onMounted } from "vue";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
 const columns = CustomerColumn;
 const dataSource = ref(CustomerData);
+onMounted(() => {
+  API({
+    method: "post",
+    url: "/admin/getCustomer",
+    data: JSON.stringify({}),
+  }).then((res) => {
+    dataSource.value = CustomerDataLoader(res.data.dt);
+  });
+});
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(
@@ -73,7 +85,16 @@ const save = (key) => {
     editableData[key]
   );
   delete editableData[key];
-  console.log(dataSource.value.filter((item) => key === item.key)[0]);
+  let editedData = dataSource.value.filter((item) => key === item.key)[0];
+  let PostData = {
+    c_id: editedData.key,
+    password: editedData.password,
+  };
+  API({
+    method: "post",
+    url: "/admin/updateCustomer",
+    data: JSON.stringify(PostData),
+  });
 };
 // 取消的逻辑
 const cancel = (key) => {
@@ -83,6 +104,11 @@ const cancel = (key) => {
 const deletebyId = (key) => {
   dataSource.value = dataSource.value.filter((item) => key != item.key);
   console.log(key);
+  API({
+    method: "post",
+    url: "/admin/deleteCustomer",
+    data: JSON.stringify({ c_id: key }),
+  });
 };
 </script>
 <style scoped>

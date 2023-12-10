@@ -69,17 +69,17 @@ const OrderColumn = [
   },
   {
     title: "顾客姓名",
-    dataIndex: "m_id",
+    dataIndex: "c_name",
     width: "10%",
   },
   {
     title: "顾客地址",
-    dataIndex: "c_id",
+    dataIndex: "c_address",
     width: "10%",
   },
   {
     title: "顾客电话",
-    dataIndex: "s_id",
+    dataIndex: "c_phone",
     width: "10%",
   },
   {
@@ -94,7 +94,7 @@ const OrderColumn = [
   },
   {
     title: "骑手电话",
-    dataIndex: "dphone",
+    dataIndex: "d_phone",
     width: "10%",
   },
   {

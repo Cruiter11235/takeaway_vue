@@ -53,12 +53,25 @@ import { reactive, ref } from "vue";
 import addComp from "@/components/addComp.vue";
 import { DeliveryColumn } from "../../store/Columns/columnForAdmin";
 import { DeliveryData } from "../../store/staticData/dataForAdmin";
+import API from "../../utils/API";
+import { onMounted } from "vue";
+import { DeliveryDataLoader } from "../../store/DataLoaders/AdminDataLoader";
 const pagination = {
   defaultPageSize: 5,
   showSizeChanger: false,
 };
 const columns = DeliveryColumn;
 const dataSource = ref(DeliveryData);
+onMounted(() => {
+  API({
+    method: "post",
+    url: "/admin/getDelivery",
+    data: JSON.stringify({}),
+  }).then((res) => {
+    console.log(res.data);
+    dataSource.value = DeliveryDataLoader(res.data.dt);
+  });
+});
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(
@@ -73,6 +86,16 @@ const save = (key) => {
     editableData[key]
   );
   delete editableData[key];
+  let editedData = dataSource.value.filter((item) => key === item.key)[0];
+  let PostData = {
+    d_id: editedData.key,
+    password: editedData.password,
+  };
+  API({
+    method: "post",
+    url: "/admin/updateDelivery",
+    data: JSON.stringify(PostData),
+  });
   console.log(dataSource.value.filter((item) => key === item.key)[0]);
 };
 // 取消的逻辑
@@ -83,6 +106,11 @@ const cancel = (key) => {
 const deletebyId = (key) => {
   dataSource.value = dataSource.value.filter((item) => key != item.key);
   console.log(key);
+  API({
+    method: "post",
+    url: "/admin/deleteDelivery",
+    data: JSON.stringify({ d_id: key }),
+  });
 };
 </script>
 <style scoped>

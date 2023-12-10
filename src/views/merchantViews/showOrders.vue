@@ -19,7 +19,7 @@
     style="width: 95%; margin: auto"
   >
     <template #bodyCell="{ column, text, record }">
-      <template v-if="['status'].includes(column.dataIndex)">
+      <template v-if="[].includes(column.dataIndex)">
         <div>
           <a-select
             v-if="editableData[record.key]"
@@ -45,7 +45,6 @@
             </a-typography-link>
           </span>
           <span v-else>
-            <a @click="edit(record.key)">Edit</a>
             <a-button @click="showModal(record.key)">查看订单内容</a-button>
           </span>
         </div>
@@ -59,10 +58,19 @@ import { reactive, ref } from "vue";
 import { OrderColumn } from "@/store/Columns/columnForMerchant";
 import FoodList from "@/components/FoodList.vue";
 import { OrdersData } from "@/store/staticData/dataForMerchant";
-
+import { OrdersDataLoader } from "../../store/DataLoaders/MerchantDataLoader";
+import { onMounted } from "vue";
+import API from "../../utils/API";
 const open = ref(false);
 const PopContent = ref({});
 const showModal = (key) => {
+  API({
+    method: "post",
+    url: "/delivery/getOrderMeals",
+    data: JSON.stringify({ o_id: key }),
+  }).then((res) => {
+    PopContent.value = res.data.dt;
+  });
   console.log(key);
   PopContent.value = { v: key };
   open.value = true;
@@ -73,6 +81,19 @@ const pagination = {
 };
 const columns = OrderColumn;
 const dataSource = ref(OrdersData);
+onMounted(() => {
+  let PostData = {
+    m_id: localStorage.getItem("m_id"),
+  };
+  API({
+    method: "post",
+    url: "/merchant/getOrders",
+    data: JSON.stringify(PostData),
+  }).then((res) => {
+    console.log(res.data);
+    dataSource.value = OrdersDataLoader(res.data.dt);
+  });
+});
 const editableData = reactive({});
 const edit = (key) => {
   editableData[key] = cloneDeep(
